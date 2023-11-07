@@ -1,15 +1,10 @@
-from datetime import datetime, timedelta
 
-from django.contrib.auth import logout, login
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import LoginView
 from django.views.generic.list import ListView
 
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, DetailView
 
 from pasteBin.forms import PasteForm, PasswordForm
@@ -19,11 +14,6 @@ from pygments.lexers import get_lexer_by_name
 from pygments.formatters import HtmlFormatter
 
 # Create your views here.
-
-
-def index(request):
-
-    return HttpResponse("Hello Pusya")
 
 
 class PasteHome(CreateView):
