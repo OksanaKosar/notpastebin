@@ -12,7 +12,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, DetailView
 
-from pasteBin.forms import PasteForm, PasswordForm, RegisterUserForm, LoginUserForm
+from pasteBin.forms import PasteForm, PasswordForm
 from pasteBin.models import Paste
 from pygments import highlight
 from pygments.lexers import get_lexer_by_name
@@ -97,31 +97,5 @@ class MyPaste(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return Paste.objects.filter(user=self.request.user)
-
-
-class RegisterUser(CreateView):
-    form_class = RegisterUserForm
-    template_name = "pasteBin/register.html"
-    success_url = reverse_lazy('login')
-
-    def form_valid(self, form):
-        user = form.save()
-        login(self.request, user)
-        return redirect('home')
-
-
-
-class LoginUser(LoginView):
-
-    form_class = LoginUserForm
-    template_name = 'pasteBin/login.html'
-
-    def get_success_url(self):
-        return reverse_lazy('home')
-
-
-def logout_user(request):
-    logout(request)
-    return redirect('login')
 
 
