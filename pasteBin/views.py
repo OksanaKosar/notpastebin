@@ -26,14 +26,13 @@ def index(request):
     return HttpResponse("Hello Pusya")
 
 
-class CreatePaste(CreateView):
-    # model = Paste
-
+class PasteHome(CreateView):
     form_class = PasteForm
     template_name = "pasteBin/homepage.html"
 
-    def get(self, request, *args, **kwargs):
-        return redirect('home')
+    def get_context_data(self, **kwargs):
+        kwargs['object_list'] = Paste.objects.filter(access_password__isnull=True).order_by('-pk')[:10]
+        return super().get_context_data(**kwargs)
 
     def form_valid(self, form):
         user = self.request.user if self.request.user.is_authenticated else None
@@ -54,7 +53,6 @@ class CreatePaste(CreateView):
             return self.object.get_absolute_url()
         else:
             return redirect(self.request.path)
-
 
 
 class ShowPaste(DetailView):
@@ -89,24 +87,6 @@ class ShowPaste(DetailView):
             highlighted_text = highlight(text, lexer, HtmlFormatter())
             context['highlighted_text'] = highlighted_text
 
-        return context
-
-
-class PasteHome(ListView):
-    model = Paste
-
-    template_name = 'pasteBin/homepage.html'
-    context_object_name = 'paste'
-
-    def get_queryset(self):
-        null_password_pastes = Paste.objects.filter(access_password__isnull=True).order_by('-pk')
-        last_10_pastes = null_password_pastes[:10]
-
-        return last_10_pastes
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['form_paste'] = PasteForm
         return context
 
 

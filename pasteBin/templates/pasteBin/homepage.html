@@ -6,16 +6,16 @@
     <div class="row">
         <div class="col-md-8">
             <h1>Add Paste</h1>
-            <form action="addpaste/" method="POST" enctype="multipart/form-data">
+            <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
-                {{ form_paste.as_p }}
+                {{ form.as_p }}
                 <button type="submit" class="btn btn-primary">Create</button>
             </form>
         </div>
         <div class="col-md-4" style="max-height: 700px; overflow-y: auto;">
             <h1>Paste List</h1>
             <ul>
-                {% for p in paste %}
+                {% for p in object_list %}
                     <li style="list-style: none;">
                         <div class="card border-primary mb-3" style="max-width: 50rem;">
                             <div class="card-header">{{ p.title }}</div>
