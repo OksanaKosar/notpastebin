@@ -1,0 +1,44 @@
+
+{% extends 'pasteBin/base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <h1>Add Paste</h1>
+            <form action="addpaste/" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form_paste.as_p }}
+                <button type="submit" class="btn btn-primary">Create</button>
+            </form>
+        </div>
+        <div class="col-md-4" style="max-height: 700px; overflow-y: auto;">
+            <h1>Paste List</h1>
+            <ul>
+                {% for p in paste %}
+                    <li style="list-style: none;">
+                        <div class="card border-primary mb-3" style="max-width: 50rem;">
+                            <div class="card-header">{{ p.title }}</div>
+                            <div class="card-body ">
+                                <h4 class="card-title">
+                                    {% for tag in p.tags.all %}
+                                        {{ tag.name }}
+                                        {% if not forloop.last %} ,
+                                        {% endif %}
+                                    {% endfor %}
+                                </h4>
+                                <p class="card-text">{{ p.content | truncatewords:10 }}</p>
+                            </div>
+                            <div class="clear"></div>
+                            <a class="btn btn-light" href="{{ p.get_absolute_url }}">More</a>
+                        </div>
+                    </li>
+                    <hr/>
+                {% empty %}
+                    <li>No objects yet.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

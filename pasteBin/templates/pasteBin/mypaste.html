@@ -1,0 +1,42 @@
+{% extends 'pasteBin/base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h1>Paste</h1>
+                <ul>
+                    {% for p in paste %}
+                        <li style="list-style: none;">
+                        <div class="card border-primary mb-3" style="max-width: 50rem;">
+                          <div class="card-header">{{ p.title }}</div>
+                          <div class="card-body ">
+                            <h4 class="card-title">
+                                {% for tag in p.tags.all %}
+                                    {{ tag.name }}
+                                    {% if not forloop.last %} ,
+                                    {% endif %}
+                                {% endfor %}
+                            </h4>
+                            <p class="card-text">{{ p.content | truncatewords:25 }}</p>
+                          </div>
+                        <div class="clear"></div>
+                            <a class="btn btn-light" href="{{ p.get_absolute_url }}">More</a>
+                        </div>
+                        </li>
+                    <hr/>
+                    {% empty %}
+                        <div class="row align-items-center">
+                            <div class="col-6">
+                                <h4>No pastes yet</h4>
+                            </div>
+                            <div class="col-6" style="text-align: end;">
+                                <button  type="button" class="btn btn-outline-warning mt-3">Add paste</button>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

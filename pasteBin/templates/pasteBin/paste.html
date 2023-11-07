@@ -1,0 +1,37 @@
+
+{% extends 'pasteBin/base.html' %}
+{% block content %}
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <h3 class="card-header">{{ object.title }}</h3>
+        <div class="card-body">
+          <h5 class="card-title">Tag</h5>
+          <h6 class="card-subtitle text-muted">
+            {% for tag in object.tags.all %}
+              {{ tag.name }}
+              {% if not forloop.last %} ,
+              {% endif %}
+            {% endfor %}
+          </h6>
+        </div>
+        <div class="card-body">
+            {% if object.text_type_id is 1 %}
+                <p class="card-text"> {{ object.content }}</p>
+            {% else %}
+            <pre>
+            {{ highlighted_text|safe }}
+             </pre>
+            {% endif %}
+        </div>
+        <div class="card-footer text-muted">
+          {{ object.expiration_date }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
