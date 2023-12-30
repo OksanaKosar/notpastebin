@@ -50,7 +50,6 @@ class ShowPaste(DetailView):
     template_name = 'pasteBin/paste.html'
 
     def get(self, request, *args, **kwargs):
-        print(request.user)
         self.object = self.get_object()
         password = request.GET.get('password')
 
