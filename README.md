@@ -4,6 +4,7 @@
 
 1. [Installation](#1-installation)
 2. [How It Works](#2-how-it-works)
+3. [Celery Integration](#3-celery-integration)
 
 ## 1. Installation
 
@@ -16,6 +17,7 @@ Before you begin, make sure you have the following installed on your system:
 - Python (3.7 or higher)
 - Django (3.2 or the latest version)
 - Virtual environment (optional but recommended)
+- Celery
 
 ### Clone the Repository
 
@@ -105,6 +107,20 @@ The `pasteBin` app defines the following URL patterns:
 - `/paste/<int:pk>/`: View a specific paste by its primary key
 
 
-This README provides a high-level overview of the project's installation and functionality. Make sure to explore the codebase and templates for more details on the project's features and implementation.
+## 3. Celery Integration
+
+The Django PasteBin project now includes Celery for background task processing. Celery is configured to automatically remove expired paste rows every 24 hours.
+
+Make sure to have Celery installed and running. You can start Celery with the following command:
+
+```bash
+celery -A base worker --loglevel=info
+```
+```bash
+celery -A base beat --loglevel=info
+```
+The scheduled task to remove expired rows is set up in the `delete_expired_rows` Celery task located in the `pasteBin/tasks.py` file. This task runs every 24 hours and deletes paste rows with expiration dates earlier than yesterday.
+
+Ensure that your Celery and Django environments are properly configured for seamless integration. Explore the codebase and templates for more details on the project's features and implementation.
 
 Happy coding!
